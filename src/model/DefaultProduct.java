@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 public class DefaultProduct extends Product{
 	private String naam;
 	private int prijsPerEenheid;
-	private String imageUrl;
+	private String imageUrl = "";
 	private int eenheid;
 	
 	public DefaultProduct(String naam, int prijsPerEenheid, String imageUrl, int eenheid){
