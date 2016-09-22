@@ -8,10 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import model.*;
 
-@WebServlet("/index")
-public class Index extends HttpServlet {
 
+@WebServlet("/Product")
+public class ProductServlet extends HttpServlet {
+	public static Product productLijst[] = {new DefaultProduct("Default",2,""),
+			new KwantumKorting("Kwantum",3,""), new Beperkt("Beperkt", 1, "")};
+	
 	/**
 		 * The doGet method of the servlet. <br>
 		 *
@@ -23,42 +28,22 @@ public class Index extends HttpServlet {
 		 * @throws IOException if an error occurred
 		 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		int id = 0;
 		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE HTML5"
-		+ "<html>"
-		+ "<head><title>Welkom bij mijn webshop!</TITLE></HEAD>"
-		+ "<body>"
-		+ "Welkom bij mijn webshop. Bekijk hier de producten!"
-		+ "<p>"
-		+ "<!DOCTYPE HTML>"
-		+ "<html>"
-		+ "<head>"
-		+ "<meta charset=UTF-8>"
-		+ "<title>Index</title>"
-		+ "</head>"
-		+ "<body>"
-		+ "<ul>"
-		+ "<li><a href=Product?id=0>Default</a></li>"
-		+ "<li><a href=Product?id=1>Kwantumkorting</a></li>"
-		+ "<li><a href=Product?id=2>Beperkt</a></li>"
-		+ "<li><a href=Product?id=3>Formulier</a></li>"
-		+ "</ul>"
-		+ "</body>"
-		+ "</html>"
-		+ "</p"
-		+ "</body>"
-		+ "</html>");
-	
-		out.println(request.getParameter("radio"));
-		if(request.getParameter("radio") != null){
-			response.sendError(Integer.parseInt(request.getParameter("radio")));
+		response.getWriter().append("Dit is de productpagina");
+		response.getWriter().append("   " + request.getParameter("id"));
+		try{
+			id = Integer.parseInt(request.getParameter("id"));
+		}catch(Exception e){
+			response.getWriter().append("Exeption! Jammer man");
 		}
-		//request.getRequestDispatcher("WEB-INF/GroentePakket.jsp").forward(request, response);
-		out.flush();
-		out.close();
-	}
+		//response.getWriter().append("PRODUCT: " + productLijst[id]);
+		if(id < 3){
+			request.setAttribute("productSpecificatie", productLijst[id]);
+			request.getRequestDispatcher("/WEB-INF/ProductPage.jsp").forward(request, response);
+		}else
+			request.getRequestDispatcher("WEB-INF/Form.jsp").forward(request, response);
+	}	
 
 	/**
 		 * The doPost method of the servlet. <br>
